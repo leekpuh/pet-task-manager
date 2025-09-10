@@ -13,7 +13,7 @@ export default function Projects() {
         getAllProjects()
             .then((data) => setProjects(data))
             .catch((err) => console.error(err));
-    }, [, reRenderProjects]);
+    }, [reRenderProjects]);
 
     return (
         <div className="flex flex-col p-5 h-full">
@@ -21,7 +21,7 @@ export default function Projects() {
                 Проекты
             </div>
             <hr className="border-2 border-gray-200/75 " />
-            <div className="pt-5 grid grid-cols-3 h-fit gap-5">
+            <div className="pt-5 grid grid-cols-4 h-fit gap-5">
                 {projects.map((project) => (
                     <ProjectCard key={project.id} project={project} />
                 ))}
