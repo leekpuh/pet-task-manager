@@ -1,22 +1,14 @@
-"use client"
-
-import {
-    Description,
-    Field,
-    Input,
-    Label,
-    Textarea,
-    Checkbox,
-} from "@headlessui/react";
+"use client";
+import { v4 as uuidv4 } from "uuid";
+import { Field, Input, Label, Textarea } from "@headlessui/react";
 import clsx from "clsx";
-import { useRef, useState, useContext } from "react";
+import { useRef, useContext } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { AppContext } from "@/app/store/appContext";
-
-
+import { postProject } from "@/app/api/projects";
+import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
 
 export default function CreateNewProjectForm() {
-    const {projects, setProjects} = useContext(AppContext)
+    const { setReRenderProjects } = useContext(ReRenderPageContext);
     const today = new Date().toISOString().split("T");
 
     const title = useRef(null);
@@ -27,17 +19,17 @@ export default function CreateNewProjectForm() {
     function handleProjectSubmit(e) {
         e.preventDefault();
         const data = {
-            id: title.current.value + Date.now(),
+            id: uuidv4(),
             title: title.current.value,
             desc: desc.current.value,
             startDate: startDate.current.value,
             endDate: endDate.current.value,
-            createdDate: today[0]
+            createdDate: today[0],
         };
-
-
-        setProjects((prev) => [...prev, data]);
-        e.target.reset();
+        postProject(data).then(() => {
+            e.target.reset();
+            setReRenderProjects((prev => !prev));
+        });
     }
 
     return (
@@ -60,9 +52,7 @@ export default function CreateNewProjectForm() {
                 />
             </Field>
             <Field className="mt-5">
-                <Label className="text-lg text-gray-700 ">
-                    Описание
-                </Label>
+                <Label className="text-lg text-gray-700 ">Описание</Label>
                 <Textarea
                     rows={3}
                     className={clsx(
@@ -73,9 +63,7 @@ export default function CreateNewProjectForm() {
                 />
             </Field>
             <Field className="mt-5">
-                <Label className="text-lg text-gray-700 ">
-                    Дата начала 
-                </Label>
+                <Label className="text-lg text-gray-700 ">Дата начала</Label>
                 <Input
                     required
                     type="date"
@@ -88,9 +76,7 @@ export default function CreateNewProjectForm() {
                 />
             </Field>
             <Field className="mt-5">
-                <Label className="text-lg text-gray-700 ">
-                    Дата окончания 
-                </Label>
+                <Label className="text-lg text-gray-700 ">Дата окончания</Label>
                 <Input
                     required
                     type="date"
@@ -113,4 +99,3 @@ export default function CreateNewProjectForm() {
         </form>
     );
 }
-

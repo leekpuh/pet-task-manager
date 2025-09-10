@@ -1,22 +1,13 @@
-"use client"
+"use client";
 
-import {
-    Description,
-    Field,
-    Input,
-    Label,
-    Textarea,
-    Checkbox,
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
-} from "@headlessui/react";
-
+import { Field, Input, Label, Textarea } from "@headlessui/react";
+import { v4 as uuidv4 } from "uuid";
 import clsx from "clsx";
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { AppContext } from "@/app/store/appContext";
+import { postTask } from "@/app/api/tasks";
+import { getAllProjects } from "@/app/api/projects";
+import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
 
 function getLocalDateTime() {
     const now = new Date();
@@ -32,29 +23,35 @@ function getLocalDateTime() {
 }
 
 export default function CreateNewTaskForm() {
-    const { setTasks, projects } = useContext(AppContext);
+    const { reRenderTasks, setReRenderTasks } = useContext(ReRenderPageContext)
+    const [projects, setProjects] = useState([]);
+    console.log(reRenderTasks)
+    useEffect(() => {
+        getAllProjects()
+            .then((data) => setProjects(data))
+            .catch((err) => console.error(err));
+    }, []);
+
     const today = getLocalDateTime();
 
     const title = useRef(null);
     const desc = useRef(null);
     const startDate = useRef(null);
     const endDate = useRef(null);
-    const projectID = useRef(null);
-
+    const projectData = useRef(null);
 
     function handleTaskSubmit(e) {
         e.preventDefault();
         const data = {
-            id: title.current.value + Date.now(),
+            id: uuidv4(),
             title: title.current.value,
             desc: desc.current.value,
             startDate: startDate.current.value,
             endDate: endDate.current.value,
-            projectID: projectID.current.value,
+            projectData: JSON.parse(projectData.current.value),
             createdDate: today,
         };
-        setTasks((prev) => [...prev, data]);
-        e.target.reset();
+        postTask(data).then(() => {e.target.reset(); setReRenderTasks(prev => !prev)});
     }
 
     return (
@@ -118,24 +115,24 @@ export default function CreateNewTaskForm() {
                     Назначить проект
                 </Label>
                 <select
-                    ref={projectID}
+                    ref={projectData}
                     required
                     className={clsx(
                         "mt-3 block w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray",
                         "focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-gray-400/75"
                     )}
                 >
-                   
-                    
-                        {projects.map((project) => (
-                            <option 
-                                key={project.id}
-                                value={project.id}
-                            >
-                                    {project.title}
-                            </option>
-                        ))}
-                  
+                    {projects.map((project) => (
+                        <option
+                            key={project.id}
+                            value={JSON.stringify({
+                                id: project.id,
+                                title: project.title,
+                            })}
+                        >
+                            {project.title}
+                        </option>
+                    ))}
                 </select>
             </Field>
 

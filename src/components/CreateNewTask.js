@@ -1,5 +1,4 @@
 import { IoClose } from "react-icons/io5";
-import {useState } from "react";
 import CreateNewTaskForm from "./CreateNewTaskForm";
 
 
