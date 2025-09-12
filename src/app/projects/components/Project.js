@@ -5,9 +5,17 @@ import { useState, useEffect } from "react";
 import { BsCardList, BsList } from "react-icons/bs";
 import ProjectCard from "./ProjectCard";
 import { createPortal } from "react-dom";
+import clsx from "clsx";
 
 export default function Project({ project }) {
     const [showProjectCard, setShowProjectCard] = useState(false);
+    const [expiredProject, setExpiredProject] = useState(false);
+
+    useEffect(() => {
+        new Date(project.endDate) < new Date()
+            ? setExpiredProject(true)
+            : setExpiredProject(false);
+    });
 
     useEffect(() => {
         const html = document.documentElement;
@@ -19,7 +27,7 @@ export default function Project({ project }) {
     return (
         <div className="w-full h-auto bg-white p-5 rounded-xl shadow-lg flex flex-col gap-4 border-2 border-gray-200">
             <div className="break-words">{project.title}</div>
-            <div className="bg-gray-200 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3">
+            <div className="bg-gray-200 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm">
                 <div className="size-2 bg-gray-500 rounded-full"></div>Начало{" "}
                 {new Date(project.startDate).toLocaleDateString("ru-RU", {
                     day: "2-digit",
@@ -27,8 +35,21 @@ export default function Project({ project }) {
                     year: "numeric",
                 })}
             </div>
-            <div className="bg-green-100 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3">
-                <div className="size-2 bg-green-500 rounded-full"></div>Дедлайн{" "}
+            <div
+                className={clsx(
+                    "w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm",
+                    { "bg-green-100": !expiredProject },
+                    { "bg-red-100": expiredProject }
+                )}
+            >
+                <div
+                    className={clsx(
+                        "size-2 bg-green-500 rounded-full",
+                        { "bg-green-500": !expiredProject },
+                        { "bg-red-500": expiredProject }
+                    )}
+                ></div>
+                Дедлайн{" "}
                 {new Date(project.endDate).toLocaleDateString("ru-RU", {
                     day: "2-digit",
                     month: "long",
