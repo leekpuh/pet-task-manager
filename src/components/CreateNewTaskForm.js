@@ -23,9 +23,9 @@ function getLocalDateTime() {
 }
 
 export default function CreateNewTaskForm() {
-    const { reRenderTasks, setReRenderTasks } = useContext(ReRenderPageContext)
+    const { setReRenderTasks } = useContext(ReRenderPageContext)
     const [projects, setProjects] = useState([]);
-    console.log(reRenderTasks)
+    
     useEffect(() => {
         getAllProjects()
             .then((data) => setProjects(data))

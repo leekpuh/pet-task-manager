@@ -4,7 +4,7 @@ import TaskCardForm from "./TaskCardForm";
 export default function TaskCard({ task, onClose }) {
     return (
         <div className="h-full w-full z-40 flex justify-center fixed backdrop-blur-md bg-black/30">
-            <div className=" bg-gray-100  flex flex-col rounded-2xl w-2/6 h-6/7 shadow-2xl border-1 border-gray-200 overflow-y-auto p-10 self-center h-fit">
+            <div className=" bg-gray-100  flex flex-col rounded-2xl w-2/6 shadow-2xl border-1 border-gray-200 overflow-y-auto p-10 self-center h-fit max-h-screen">
                 <div className="flex w-full">
                     <div className="text-lg w-full">
                         <button className="bg-blue-200/75 mr-2 px-4 py-2 rounded-t-2xl cursor-pointer ">
@@ -21,7 +21,7 @@ export default function TaskCard({ task, onClose }) {
 
                 <div className="flex flex-col h-full bg">
                     <hr className="border-3 border-blue-200/75 rounded-full" />
-                    <TaskCardForm task={task} />
+                    <TaskCardForm task={task}/>
                 </div>
             </div>
         </div>

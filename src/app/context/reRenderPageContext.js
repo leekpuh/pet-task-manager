@@ -9,6 +9,8 @@ export function ReRenderPageProvider({children}) {
     const [ reRenderProjects , setReRenderProjects] = useState(false)
 
     return <ReRenderPageContext value={{reRenderTasks, setReRenderTasks, reRenderProjects, setReRenderProjects}}>
-        {children}
+   
+            {children}
+     
     </ReRenderPageContext>
 }

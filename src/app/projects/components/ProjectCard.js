@@ -21,7 +21,20 @@ export default function ProjectCard({ project }) {
                     year: "numeric",
                 })}
             </div>
-            <Link href={{pathname: "/tasks", query: {projectID: project.id}}} className="bg-blue-50  w-fit px-4 py-2 rounded-full flex gap-2 text-center text-blue-700 items-center border-2 border-blue-200 self-end cursor-pointer hover:bg-blue-100/75"><BsList /> Список задач</Link>
+            <div>
+                <button>
+                   
+                </button>
+                 <Link
+                        href={{
+                            pathname: "/tasks",
+                            query: { projectID: project.id },
+                        }}
+                        className="bg-blue-50  w-fit px-4 py-2 rounded-full flex gap-2 text-center text-blue-700 items-center border-2 border-blue-200 self-end cursor-pointer hover:bg-blue-100/75"
+                    >
+                        <BsList /> Список задач
+                    </Link>
+            </div>
         </div>
     );
 }

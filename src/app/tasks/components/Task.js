@@ -1,22 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { BsCardList } from "react-icons/bs";
 import TaskCard from "./TaskCard";
 
 export default function Task({ task }) {
     const [showTaskCard, setShowTaskCard] = useState(false);
+
+    useEffect(() => {
+        const html = document.documentElement;
+        showTaskCard
+            ? (html.style.overflow = "hidden")
+            : (html.style.overflow = "");
+    }, [showTaskCard]);
+
     return (
         <div className="shadow-lg border-1 border-gray-200 p-4 rounded-lg my-5 mx-5 overflow-auto h-fit break-words">
             <div>{task.title}</div>
             <div className="w-full flex justify-between mt-2">
-                 <div className="bg-green-100 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm">
-                <div className="size-2 bg-green-500 rounded-full"></div>Дедлайн{" "}
-                {new Date(task.endDate).toLocaleDateString("RU-ru", {
-                    day: "2-digit",
-                    month: "long",
-                    year: "numeric",
-                })}
-            </div>
+                <div className="bg-green-100 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm">
+                    <div className="size-2 bg-green-500 rounded-full"></div>
+                    Дедлайн{" "}
+                    {new Date(task.endDate).toLocaleDateString("RU-ru", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                    })}
+                </div>
                 <button
                     title="Карточка задачи"
                     onClick={() => setShowTaskCard(true)}
