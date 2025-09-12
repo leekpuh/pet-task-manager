@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import ProjectCard from "./components/ProjectCard";
 import { getAllProjects } from "../api/projects";
 import { ReRenderPageContext } from "../context/reRenderPageContext";
+import Project from "./components/Project";
 
 export default function Projects() {
     const { reRenderProjects } = useContext(ReRenderPageContext);
@@ -23,7 +23,7 @@ export default function Projects() {
             <hr className="border-2 border-gray-200/75 " />
             <div className="pt-5 grid grid-cols-4 h-fit gap-5">
                 {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
+                    <Project key={project.id} project={project} />
                 ))}
             </div>
         </div>

@@ -20,7 +20,7 @@ export default function Task({ task }) {
                 <div className="bg-green-100 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm">
                     <div className="size-2 bg-green-500 rounded-full"></div>
                     Дедлайн{" "}
-                    {new Date(task.endDate).toLocaleDateString("RU-ru", {
+                    {new Date(task.endDate).toLocaleDateString("ru-RU", {
                         day: "2-digit",
                         month: "long",
                         year: "numeric",

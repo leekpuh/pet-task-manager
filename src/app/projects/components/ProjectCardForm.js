@@ -1,14 +1,15 @@
 "use client";
 
-import { deleteTask, patchTask } from "@/app/api/tasks";
+import { deleteProject, patchProject } from "@/app/api/projects";
+import { deleteTask, getAllTasks } from "@/app/api/tasks";
 import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
 import { Field, Input, Label, Textarea } from "@headlessui/react";
 import clsx from "clsx";
 import { useState, useRef, useContext } from "react";
 import { BsPencil, BsSave, BsTrash } from "react-icons/bs";
 
-export default function TaskCardForm({ task }) {
-    const { setReRenderTasks } = useContext(ReRenderPageContext);
+export default function ProjectCardForm({ project }) {
+    const { setReRenderProjects } = useContext(ReRenderPageContext);
     const [editOn, setEditOn] = useState(false);
 
     const title = useRef(null);
@@ -16,8 +17,7 @@ export default function TaskCardForm({ task }) {
     const startDate = useRef(null);
     const endDate = useRef(null);
 
-    function handleTaskSubmit(e) {
-        console.log("ggg")
+    function handleProjectSubmit(e) {
         e.preventDefault();
         const data = {
             title: title.current.value,
@@ -25,27 +25,37 @@ export default function TaskCardForm({ task }) {
             startDate: startDate.current.value,
             endDate: endDate.current.value,
         };
-        patchTask(task.id, data).then(() => {
-            setReRenderTasks((prev) => !prev);
+        patchProject(project.id, data).then(() => {
+            setReRenderProjects((prev) => !prev);
         });
     }
 
-    function handleDeleteTask() {
-        deleteTask(task.id).then(() => {
-            setReRenderTasks((prev) => !prev);
-        });
+    function handleDeleteProject() {
+        deleteProject(project.id)
+            .then(
+                getAllTasks().then((tasks) =>
+                    tasks.map((task) => {
+                        if (task.projectData.id === project.id) {
+                            deleteTask(task.id);
+                        }
+                    })
+                )
+            )
+            .then(() => {
+                setReRenderProjects((prev) => !prev);
+            });
     }
 
     return (
-        <form onSubmit={handleTaskSubmit} className="w-full">
+        <form onSubmit={handleProjectSubmit} className="w-full">
             <Field className="mt-10">
-                <Label className="text-lg text-gray-700 ">Задача</Label>
+                <Label className="text-lg text-gray-700 ">Проект</Label>
                 <Input
                     ref={title}
                     required
                     disabled={!editOn}
                     type="text"
-                    defaultValue={task.title}
+                    defaultValue={project.title}
                     className={clsx(
                         "mt-3 block w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray",
                         "focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-gray-400/75",
@@ -59,7 +69,7 @@ export default function TaskCardForm({ task }) {
                     ref={desc}
                     rows={5}
                     disabled={!editOn}
-                    defaultValue={task.desc}
+                    defaultValue={project.desc}
                     className={clsx(
                         "mt-3 block w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray",
                         "focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-gray-400/75",
@@ -72,9 +82,9 @@ export default function TaskCardForm({ task }) {
                 <Input
                     ref={startDate}
                     required
-                    type="datetime-local"
+                    type="date"
                     disabled={!editOn}
-                    defaultValue={task.startDate}
+                    defaultValue={project.startDate}
                     className={clsx(
                         "mt-3 block w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray",
                         "focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-gray-400/75",
@@ -87,9 +97,9 @@ export default function TaskCardForm({ task }) {
                 <Input
                     required
                     ref={endDate}
-                    type="datetime-local"
+                    type="date"
                     disabled={!editOn}
-                    defaultValue={task.endDate}
+                    defaultValue={project.endDate}
                     className={clsx(
                         "mt-3 block w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-1.5 text-sm/6 text-gray",
                         "focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-gray-400/75",
@@ -100,8 +110,8 @@ export default function TaskCardForm({ task }) {
             <div className="flex w-full justify-between gap-3 mt-10">
                 <button
                     type="button"
-                    title="Удалить задачу"
-                    onClick={handleDeleteTask}
+                    title="Удалить проект"
+                    onClick={handleDeleteProject}
                     className="w-fit py-2 px-5  rounded-full bg-red-400 text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-red-500/75 cursor-pointer"
                 >
                     <BsTrash /> Удалить
@@ -119,7 +129,7 @@ export default function TaskCardForm({ task }) {
                     {!editOn && (
                         <button
                             type="button"
-                            title="Редактировать задачу"
+                            title="Редактировать проект"
                             onClick={() => setEditOn((prev) => !prev)}
                             className="w-fit py-2 px-5  rounded-full bg-orange-200 text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-orange-300/75 cursor-pointer"
                         >
