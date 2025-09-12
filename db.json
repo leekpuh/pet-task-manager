@@ -1,4 +1,38 @@
 {
-  "projects": [],
-  "tasks": []
+  "projects": [
+    {
+      "id": "6324a7e2-d57f-4bef-a067-f493d03facb7",
+      "title": "Первый проект",
+      "desc": "Описание проекта",
+      "startDate": "2025-09-12",
+      "endDate": "2025-09-13",
+      "createdDate": "2025-09-12"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "714ecd76-dacb-4e8a-b719-909760f2e047",
+      "title": "Первая задача",
+      "desc": "",
+      "startDate": "2025-09-12T20:20",
+      "endDate": "2025-09-12T21:29",
+      "projectData": {
+        "id": "6324a7e2-d57f-4bef-a067-f493d03facb7",
+        "title": "Первый проект"
+      },
+      "createdDate": "2025-09-12T20:18"
+    },
+    {
+      "id": "dce6c27d-2fd6-46dc-b2ed-205ae29c682b",
+      "title": "Вторая задача",
+      "desc": "сделать то-то",
+      "startDate": "2025-09-12T20:18",
+      "endDate": "2025-09-13T20:18",
+      "projectData": {
+        "id": "6324a7e2-d57f-4bef-a067-f493d03facb7",
+        "title": "Первый проект"
+      },
+      "createdDate": "2025-09-12T20:18"
+    }
+  ]
 }

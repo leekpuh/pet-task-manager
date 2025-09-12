@@ -17,7 +17,7 @@ export default function TaskCardForm({ task }) {
     const endDate = useRef(null);
 
     function handleTaskSubmit(e) {
-        console.log("ggg")
+        
         e.preventDefault();
         const data = {
             title: title.current.value,
