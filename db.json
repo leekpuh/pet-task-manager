@@ -2,7 +2,7 @@
   "projects": [
     {
       "id": "6324a7e2-d57f-4bef-a067-f493d03facb7",
-      "title": "Первый проект",
+      "title": "Первый проект 1",
       "desc": "Описание проекта",
       "startDate": "2025-09-12",
       "endDate": "2025-09-13",
@@ -12,10 +12,10 @@
   "tasks": [
     {
       "id": "714ecd76-dacb-4e8a-b719-909760f2e047",
-      "title": "Первая задача",
+      "title": "lgiul",
       "desc": "",
       "startDate": "2025-09-12T20:20",
-      "endDate": "2025-09-12T21:29",
+      "endDate": "2025-09-26T21:20",
       "projectData": {
         "id": "6324a7e2-d57f-4bef-a067-f493d03facb7",
         "title": "Первый проект"

@@ -3,6 +3,7 @@
 import { deleteProject, patchProject } from "@/app/api/projects";
 import { deleteTask, getAllTasks } from "@/app/api/tasks";
 import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
+import validateTaskAndprojectForm from "@/app/utils/validateTaskAndProjectForm";
 import { Field, Input, Label, Textarea } from "@headlessui/react";
 import clsx from "clsx";
 import { useState, useRef, useContext } from "react";
@@ -11,6 +12,9 @@ import { BsPencil, BsSave, BsTrash } from "react-icons/bs";
 export default function ProjectCardForm({ project }) {
     const { setReRenderProjects } = useContext(ReRenderPageContext);
     const [editOn, setEditOn] = useState(false);
+    const [error, setError] = useState([]);
+
+    const formData = useRef(null);
 
     const title = useRef(null);
     const desc = useRef(null);
@@ -19,12 +23,23 @@ export default function ProjectCardForm({ project }) {
 
     function handleProjectSubmit(e) {
         e.preventDefault();
+
         const data = {
-            title: title.current.value,
-            desc: desc.current.value,
+            title: title.current.value.trim(),
+            desc: desc.current.value.trim(),
             startDate: startDate.current.value,
             endDate: endDate.current.value,
         };
+
+        setError([])
+
+        const errors = validateTaskAndprojectForm(data, "проект");
+
+        if (errors) {
+            setError(errors);
+            return;
+        }
+
         patchProject(project.id, data).then(() => {
             setReRenderProjects((prev) => !prev);
         });
@@ -47,7 +62,15 @@ export default function ProjectCardForm({ project }) {
     }
 
     return (
-        <form onSubmit={handleProjectSubmit} className="w-full">
+        <form onSubmit={handleProjectSubmit} ref={formData} className="w-full">
+            <div className="flex flex-col gap-2 mt-5">
+                {error &&
+                    error.map((err, idx) => (
+                        <div key={idx} className="border-1 border-red-300 text-red-400 text-sm rounded-lg py-1 px-3 w-fit">
+                            * {err}
+                        </div>
+                    ))}
+            </div>
             <Field className="mt-10">
                 <Label className="text-lg text-gray-700 ">Проект</Label>
                 <Input
@@ -120,7 +143,7 @@ export default function ProjectCardForm({ project }) {
                     <button
                         title="Сохранить изменения"
                         type="submit"
-                        onClick={() => setEditOn((prev) => !prev)}
+                        onClick={() => {setEditOn(false)}}
                         hidden={!editOn}
                         className="w-fit py-2 px-5 rounded-full bg-green-200 text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-green-300/75 cursor-pointer"
                     >
@@ -130,7 +153,7 @@ export default function ProjectCardForm({ project }) {
                         <button
                             type="button"
                             title="Редактировать проект"
-                            onClick={() => setEditOn((prev) => !prev)}
+                            onClick={() => {setEditOn((prev) => !prev)}}
                             className="w-fit py-2 px-5  rounded-full bg-orange-200 text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-orange-300/75 cursor-pointer"
                         >
                             <BsPencil /> Изменить
@@ -140,7 +163,10 @@ export default function ProjectCardForm({ project }) {
                         <button
                             type="button"
                             title="Отменить редактирование"
-                            onClick={() => setEditOn((prev) => !prev)}
+                            onClick={() => {
+                                setEditOn((prev) => !prev);
+                                formData.current.reset();
+                            }}
                             className="w-fit py-2 px-5  rounded-full bg-gray-200 text-lg flex items-center justify-center gap-2 shadow-lg hover:bg-gray-300/75 cursor-pointer"
                         >
                             <BsPencil /> Отмена
