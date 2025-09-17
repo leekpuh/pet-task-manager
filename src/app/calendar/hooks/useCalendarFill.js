@@ -28,7 +28,7 @@ export default function useCalendarFill(year, month) {
                 dayNum: i,
                 currentMonth: true,
                 monthOffset: 0,
-                dateID: (new Date(year, month, i+1).toISOString().split("T"))[0]
+                dateID: formatDate(year, month, i)
             });
         }
 
@@ -45,4 +45,8 @@ export default function useCalendarFill(year, month) {
 
         return daysArray;
     }, [year, month]);
+}
+
+function formatDate(year, month, day) {
+     return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }

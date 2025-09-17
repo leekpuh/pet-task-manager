@@ -22,10 +22,28 @@ function getLocalDateTime() {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+function getAllTaskDates(startDate, endDate) {
+    const start = new Date(startDate)
+    const end = new Date(endDate)
+
+    const diff = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+
+    const datesArr = []
+
+    const year = start.getFullYear()
+    const month = start.getMonth()
+    const day = start.getDate()
+
+    for (let i = 1; i <= diff + 1; i++) {
+        datesArr.push(new Date(year, month, day + i).toISOString().split("T")[0])
+    }
+    console.log(datesArr)
+    return datesArr;
+} 
 export default function CreateNewTaskForm() {
-    const { setReRenderTasks } = useContext(ReRenderPageContext)
+    const { setReRenderTasks } = useContext(ReRenderPageContext);
     const [projects, setProjects] = useState([]);
-    
+
     useEffect(() => {
         getAllProjects()
             .then((data) => setProjects(data))
@@ -48,10 +66,17 @@ export default function CreateNewTaskForm() {
             desc: desc.current.value,
             startDate: startDate.current.value,
             endDate: endDate.current.value,
+            allDates: getAllTaskDates(
+                startDate.current.value,
+                endDate.current.value
+            ),
             projectData: JSON.parse(projectData.current.value),
             createdDate: today,
         };
-        postTask(data).then(() => {e.target.reset(); setReRenderTasks(prev => !prev)});
+        postTask(data).then(() => {
+            e.target.reset();
+            setReRenderTasks((prev) => !prev);
+        });
     }
 
     return (

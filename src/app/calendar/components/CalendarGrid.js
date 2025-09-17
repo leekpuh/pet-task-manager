@@ -2,14 +2,18 @@
 
 import clsx from "clsx";
 import CellButtons from "./CellButtons";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
+import { getAllTasks } from "@/app/api/tasks";
+import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
 
 export default function CalendarGrid({ currentDate, days, year, month }) {
-    const [hoveredCell, setHoveredCell] = useState({
-        index: null,
-        isOpen: false,
-    });
+    const { reRenderTasks } = useContext(ReRenderPageContext);
 
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        getAllTasks().then((data) => setTasks(data));
+    }, [reRenderTasks]);
     return (
         <div className="grid grid-cols-7 gap-3 text-center w-full px-10 mb-22">
             {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((day, idx) => (
@@ -38,17 +42,19 @@ export default function CalendarGrid({ currentDate, days, year, month }) {
                     month === currentDate.getMonth() &&
                     year === currentDate.getFullYear();
 
+                const dayTasks = tasks.filter((task) =>
+                    task.allDates.includes(day.dateID)
+                );
+
+                const dayDeadlines = tasks.filter(
+                    (task) => day.dateID === task.endDate.split("T")[0]
+                );
+
                 return (
                     <div
                         key={idx}
-                        onMouseEnter={() =>
-                            setHoveredCell({ index: idx, isOpen: true })
-                        }
-                        onMouseLeave={() =>
-                            setHoveredCell({ index: null, isOpen: false })
-                        }
                         className={clsx(
-                            "flex border-b-1 border-r-1 border-gray-200 rounded-xl min-h-40 flex-col justify-between",
+                            "flex border-b-1 border-r-1 border-gray-200 rounded-xl min-h-40 flex-col justify-between group relative",
                             {
                                 "bg-gray-100 cursor-not-allowed":
                                     !day.currentMonth,
@@ -73,31 +79,30 @@ export default function CalendarGrid({ currentDate, days, year, month }) {
                             )}
                         >
                             {day.dayNum}
-                        </div> 
-                        {/* IIFE
-                        {(() => {
-                            const countMatch = newCalendarOcc.filter(
-                                (item) => item.startDate === day.dateID
-                            ).length;
-                            return countMatch > 0 ? (
-                                <div className="text-sm px-4 gap-2 bottom-0 bg-green-50 rounded-full p-1 m-2 flex shadow-lg ">
-                                    <p className="text-gray-600">Количество задач:</p>
-                                    <p className="bg-green-200 size-5 p-3 text-center rounded-full flex items-center justify-center ">
-                                        {countMatch}
-                                    </p>
-                                </div>
-                            ) : null;
-                        })()} */}
-
-                        <div
-                            className={`transition-all duration-300 ${
-                                hoveredCell.isOpen && hoveredCell.index === idx
-                                    ? "opacity-100 translate-y-0"
-                                    : "opacity-0 translate-y-8"
-                            }`}
-                        >
-                            {day.currentMonth && <CellButtons dateID={day.dateID}/>}
                         </div>
+
+                        <div className="flex mt-2 flex-col gap-2">
+                            {dayTasks.length > 0 && (
+                                <div className="bg-purple-200/75 rounded-full w-fit px-1  text-sm ml-2 pl-3 p-1 flex items-center justify-center">
+                                    Задач:
+                                    <div className="text-sm size-6 bg-white rounded-full ml-1 flex items-center justify-center">
+                                        {dayTasks.length}
+                                    </div>
+                                </div>
+                            )}
+                            {dayDeadlines.length > 0 && (
+                                <div className="bg-orange-200/75 rounded-full w-fit px-1 text-sm ml-2 pl-3 p-1 flex items-center justify-center">
+                                    Дедлайн:
+                                    <div className="text-sm size-6 bg-white rounded-full ml-1 flex items-center justify-center">
+                                        {dayDeadlines.length}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                            <div className="group-hover:opacity-100 opacity-0 transition-all duration-300">
+                                <CellButtons dateID={day.dateID} />
+                            </div>
                     </div>
                 );
             })}

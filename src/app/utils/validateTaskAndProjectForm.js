@@ -12,7 +12,8 @@ const cardType = type === "задача" ? "задачи" : "проекта"
     }
     if (!endDate) {
         errors.push(`Укажите дату окончания ${cardType}`);
-    } if (startDate >= endDate) {
+    } 
+    if (startDate >= endDate) {
          errors.push("Дата начала не может быть позднее или равна дате окончания");
     }
     if (new Date(startDate) < new Date() && new Date(endDate) < new Date()) {

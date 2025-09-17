@@ -6,7 +6,7 @@ import { ReRenderPageContext } from "../context/reRenderPageContext";
 import Project from "./components/Project";
 
 export default function Projects() {
-    const { reRenderProjects } = useContext(ReRenderPageContext);
+    const { reRenderProjects} = useContext(ReRenderPageContext);
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
