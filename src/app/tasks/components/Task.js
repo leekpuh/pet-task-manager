@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { BsCardList } from "react-icons/bs";
-import TaskCard from "./TaskCard";
 import clsx from "clsx";
+import DialogCard from "../../../components/DialogCard"
+import TaskCardForm from "./TaskCardForm";
 
 export default function Task({ task }) {
     const [showTaskCard, setShowTaskCard] = useState(false);
@@ -56,10 +57,10 @@ export default function Task({ task }) {
             </button>
             {showTaskCard &&
                 createPortal(
-                    <TaskCard
-                        task={task}
+                    <DialogCard
+                        title="Карточка задачи"
                         onClose={() => setShowTaskCard(false)}
-                    />,
+                    > <TaskCardForm task={task}/></DialogCard>,
                     document.body
                 )}
         </div>

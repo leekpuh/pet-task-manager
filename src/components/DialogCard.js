@@ -1,10 +1,9 @@
 import { IoClose } from "react-icons/io5";
-import ProjectCardForm from "./ProjectCardForm";
 
-export default function ProjectCard({ project, onClose }) {
+export default function TaskCard(props) {
     return (
         <div
-            onClick={onClose}
+            onClick={props.onClose}
             className="h-full w-full z-40 flex justify-center fixed backdrop-blur-md bg-black/30"
         >
             <div
@@ -14,20 +13,20 @@ export default function ProjectCard({ project, onClose }) {
                 <div className="flex w-full">
                     <div className="text-lg w-full">
                         <button className="bg-blue-200/75 mr-2 px-4 py-2 rounded-t-2xl cursor-pointer ">
-                            Карточка проекта
+                            {props.title}
                         </button>
                     </div>
                     <div className="flex justify-end">
                         <IoClose
                             className="ring-3 ring-gray-400 rounded-full size-7 text-gray-400 hover:ring-gray-500 hover:text-gray-500 cursor-pointer"
-                            onClick={onClose}
+                            onClick={props.onClose}
                         ></IoClose>
                     </div>
                 </div>
 
                 <div className="flex flex-col h-full bg">
                     <hr className="border-3 border-blue-200/75 rounded-full" />
-                    <ProjectCardForm project={project} />
+                    {props.children}
                 </div>
             </div>
         </div>

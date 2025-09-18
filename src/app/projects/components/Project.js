@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { BsCardList, BsList } from "react-icons/bs";
-import ProjectCard from "./ProjectCard";
 import { createPortal } from "react-dom";
 import clsx from "clsx";
+import DialogCard from "../../../components/DialogCard"
+import ProjectCardForm from "./ProjectCardForm";
 
 export default function Project({ project }) {
     const [showProjectCard, setShowProjectCard] = useState(false);
@@ -76,10 +77,12 @@ export default function Project({ project }) {
             </div>
             {showProjectCard &&
                 createPortal(
-                    <ProjectCard
-                        project={project}
+                    <DialogCard
+                        title="Карточка проекта"
                         onClose={() => setShowProjectCard(false)}
-                    />,
+                    >
+                        <ProjectCardForm project={project} />
+                    </DialogCard>,
                     document.body
                 )}
         </div>
