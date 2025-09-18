@@ -8,7 +8,7 @@ export default function TaskCard(props) {
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className=" bg-gray-100  flex flex-col rounded-2xl w-2/6 shadow-2xl border-1 border-gray-200 overflow-y-auto p-10 self-center h-fit max-h-screen"
+                className=" bg-gray-100  flex flex-col rounded-2xl w-2/6 shadow-2xl border-1 border-gray-200 p-10 self-center h-fit max-h-14/15 overflow-y-scroll"
             >
                 <div className="flex w-full">
                     <div className="text-lg w-full">

@@ -101,7 +101,7 @@ export default function CalendarGrid({ currentDate, days, year, month }) {
                         </div>
 
                             <div className="group-hover:opacity-100 opacity-0 transition-all duration-300">
-                                <CellButtons dateID={day.dateID} />
+                                <CellButtons date={new Date(day.dateID).toLocaleDateString("ru-RU", { day: "2-digit", month: "long", year: "numeric"})} dayTasks={dayTasks} dayDeadlines={dayDeadlines}/>
                             </div>
                     </div>
                 );

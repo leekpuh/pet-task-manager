@@ -16,10 +16,9 @@ export default function Task({ task }) {
     });
 
     useEffect(() => {
-        const html = document.documentElement;
         showTaskCard
-            ? (html.style.overflow = "hidden")
-            : (html.style.overflow = "");
+            ? (document.body.style.overflow = "hidden")
+            : (document.body.style.overflow = "");
     }, [showTaskCard]);
 
     return (

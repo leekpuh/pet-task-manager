@@ -18,11 +18,10 @@ export default function Project({ project }) {
             : setExpiredProject(false);
     });
 
-    useEffect(() => {
-        const html = document.documentElement;
+        useEffect(() => {
         showProjectCard
-            ? (html.style.overflow = "hidden")
-            : (html.style.overflow = "");
+            ? (document.body.style.overflow = "hidden")
+            : (document.body.style.overflow = "");
     }, [showProjectCard]);
 
     return (

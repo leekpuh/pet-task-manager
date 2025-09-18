@@ -16,10 +16,9 @@ export default function AddNewTaskButton() {
     });
 
     useEffect(() => {
-        const html = document.documentElement;
         showCreateOptions.task || showCreateOptions.project
-            ? (html.style.overflow = "hidden")
-            : (html.style.overflow = "");
+            ? (document.body.style.overflow = "hidden")
+            : (document.body.style.overflow = "");
     }, [showCreateOptions.task, showCreateOptions.project]);
 
     return (
@@ -85,7 +84,7 @@ export default function AddNewTaskButton() {
             {showCreateOptions.task &&
                 createPortal(
                     <DialogCard
-                    title="Новая задача"
+                        title="Новая задача"
                         onClose={() =>
                             setShowCreateOptions((prev) => ({
                                 ...prev,
