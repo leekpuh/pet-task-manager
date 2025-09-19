@@ -43,11 +43,11 @@ export default function CalendarGrid({ currentDate, days, year, month }) {
                     year === currentDate.getFullYear();
 
                 const dayTasks = tasks.filter((task) =>
-                    task.allDates.includes(day.dateID)
+                    task.allDates.includes(day.dateID) && task.status !== "done"
                 );
 
                 const dayDeadlines = tasks.filter(
-                    (task) => day.dateID === task.endDate.split("T")[0]
+                    (task) => day.dateID === task.endDate.split("T")[0] && task.status !== "done"
                 );
 
                 return (

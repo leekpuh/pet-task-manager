@@ -72,6 +72,7 @@ export default function CreateNewTaskForm() {
             ),
             projectData: JSON.parse(projectData.current.value),
             createdDate: today,
+            status: "created"
         };
         postTask(data).then(() => {
             e.target.reset();

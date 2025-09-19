@@ -2,12 +2,21 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { BsCardList } from "react-icons/bs";
 import clsx from "clsx";
-import DialogCard from "../../../components/DialogCard"
+import DialogCard from "../../../components/DialogCard";
 import TaskCardForm from "./TaskCardForm";
+import { useDrag } from "react-dnd";
 
 export default function Task({ task }) {
     const [showTaskCard, setShowTaskCard] = useState(false);
     const [expiredTask, setExpiredTask] = useState(false);
+
+    const [{ isDragging }, dragRef] = useDrag(() => ({
+        type: "TASK", 
+        item: { id: task.id }, 
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    }));
 
     useEffect(() => {
         new Date(task.endDate) < new Date()
@@ -22,7 +31,10 @@ export default function Task({ task }) {
     }, [showTaskCard]);
 
     return (
-        <div className="shadow-lg border-1 border-gray-200 p-4 rounded-lg my-5 mx-5 overflow-auto h-fit break-words flex gap-2 flex-col">
+        <div
+            ref={dragRef}
+            className={`shadow-lg border-1 border-gray-200 p-4 rounded-lg my-5 mx-5 overflow-auto h-fit break-words flex gap-2 flex-col cursor-grab ${isDragging ? "opacity-50" : "bg-white"}`}
+        >
             <div>{task.title}</div>
             <div
                 className={clsx(
@@ -59,7 +71,10 @@ export default function Task({ task }) {
                     <DialogCard
                         title="Карточка задачи"
                         onClose={() => setShowTaskCard(false)}
-                    > <TaskCardForm task={task}/></DialogCard>,
+                    >
+                        {" "}
+                        <TaskCardForm task={task} />
+                    </DialogCard>,
                     document.body
                 )}
         </div>
