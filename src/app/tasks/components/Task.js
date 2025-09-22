@@ -72,7 +72,6 @@ export default function Task({ task }) {
                         title="Карточка задачи"
                         onClose={() => setShowTaskCard(false)}
                     >
-                        {" "}
                         <TaskCardForm task={task} />
                     </DialogCard>,
                     document.body

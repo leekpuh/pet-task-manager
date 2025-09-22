@@ -55,7 +55,7 @@
       "title": "3 задача",
       "desc": "",
       "startDate": "2025-09-19T16:13",
-      "endDate": "2025-09-26T16:13",
+      "endDate": "2025-11-28T16:13",
       "allDates": [
         "2025-09-19",
         "2025-09-20",
@@ -72,6 +72,22 @@
       },
       "createdDate": "2025-09-19T16:13",
       "status": "created"
+    },
+    {
+      "id": "3394de00-21ac-4cc9-b89e-062391f6ccb8",
+      "title": "1 задача 2 проекта",
+      "desc": "",
+      "startDate": "2025-09-22T19:23",
+      "endDate": "2025-09-22T19:23",
+      "allDates": [
+        "2025-09-22"
+      ],
+      "projectData": {
+        "id": "b1d46243-5e98-403c-ac2a-bfe62509f0c5",
+        "title": "2 проект"
+      },
+      "createdDate": "2025-09-22T19:23",
+      "status": "inTest"
     }
   ]
 }
