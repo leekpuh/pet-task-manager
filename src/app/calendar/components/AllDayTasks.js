@@ -59,9 +59,9 @@ export default function AllDayTasks({ dayTasks, dayDeadlines }) {
                     ))}
             </div>
 
-            <div className="w-full bg-orange-200 p-2 rounded-t-xl mt-5">
+            { dayDeadlines.length > 0 && <div className="w-full bg-orange-200 p-2 rounded-t-xl mt-5">
                 Дедлайн сегодня
-            </div>
+            </div>}
             <div className="flex flex-col gap-5">
                 {dayDeadlines.map((task) => (
                     <div

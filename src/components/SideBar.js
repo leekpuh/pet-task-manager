@@ -56,7 +56,7 @@ export default function SideBar() {
                                 href={link}
                                 className="cursor-pointer py-5 flex items-center"
                             >
-                                <Icon className="size-7 mx-3" />
+                                <Icon className="size-7 mx-3 shrink-0 " />
                                 {barOpened && <span>{name}</span>}
                             </Link>
                         </li>

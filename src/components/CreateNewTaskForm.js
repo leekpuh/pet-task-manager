@@ -8,6 +8,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { postTask } from "@/app/api/tasks";
 import { getAllProjects } from "@/app/api/projects";
 import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
+import validateTaskAndprojectForm from "@/app/utils/validateTaskAndProjectForm";
 
 function getLocalDateTime() {
     const now = new Date();
@@ -23,26 +24,29 @@ function getLocalDateTime() {
 }
 
 function getAllTaskDates(startDate, endDate) {
-    const start = new Date(startDate)
-    const end = new Date(endDate)
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
     const diff = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
 
-    const datesArr = []
+    const datesArr = [];
 
-    const year = start.getFullYear()
-    const month = start.getMonth()
-    const day = start.getDate()
+    const year = start.getFullYear();
+    const month = start.getMonth();
+    const day = start.getDate();
 
     for (let i = 1; i <= diff + 1; i++) {
-        datesArr.push(new Date(year, month, day + i).toISOString().split("T")[0])
+        datesArr.push(
+            new Date(year, month, day + i).toISOString().split("T")[0]
+        );
     }
-    console.log(datesArr)
+    console.log(datesArr);
     return datesArr;
-} 
+}
 export default function CreateNewTaskForm() {
     const { setReRenderTasks } = useContext(ReRenderPageContext);
     const [projects, setProjects] = useState([]);
+    const [error, setError] = useState([]);
 
     useEffect(() => {
         getAllProjects()
@@ -72,8 +76,18 @@ export default function CreateNewTaskForm() {
             ),
             projectData: JSON.parse(projectData.current.value),
             createdDate: today,
-            status: "created"
+            status: "created",
         };
+
+        setError([]);
+
+        const errors = validateTaskAndprojectForm(data, "задача");
+
+        if (errors) {
+            setError(errors);
+            return;
+        }
+
         postTask(data).then(() => {
             e.target.reset();
             setReRenderTasks((prev) => !prev);
@@ -85,6 +99,17 @@ export default function CreateNewTaskForm() {
             onSubmit={handleTaskSubmit}
             className="w-full max-w-md px-4 flex flex-col self-center"
         >
+            <div className="flex flex-col gap-2 mt-5">
+                {error &&
+                    error.map((err, idx) => (
+                        <div
+                            key={idx}
+                            className="border-1 border-red-300 text-red-400 text-sm rounded-lg py-1 px-3 w-fit"
+                        >
+                            * {err}
+                        </div>
+                    ))}
+            </div>
             <Field className="mt-10">
                 <Label className="text-lg text-gray-700 ">
                     Название задачи

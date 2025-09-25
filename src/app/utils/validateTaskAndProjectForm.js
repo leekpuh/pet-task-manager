@@ -16,8 +16,11 @@ const cardType = type === "задача" ? "задачи" : "проекта"
     if (startDate >= endDate) {
          errors.push("Дата начала не может быть позднее или равна дате окончания");
     }
-    if (new Date(startDate) < new Date() && new Date(endDate) < new Date()) {
-         errors.push(`Дата начала или окончания ${cardType} не может быть прошедшей датой`);
+    if (new Date(endDate) < new Date()) {
+         errors.push(`Дата окончания ${cardType} не может быть прошедшей датой`);
     }
+    if (title.length > 70) {
+        errors.push(`Название ${cardType} не может быть более 70 символов`);
+    } 
     return errors.length > 0 ? errors : null
 }

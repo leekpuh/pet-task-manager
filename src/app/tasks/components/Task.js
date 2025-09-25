@@ -36,6 +36,7 @@ export default function Task({ task }) {
             className={`shadow-lg border-1 border-gray-200 p-4 rounded-lg my-5 mx-5 overflow-auto h-fit break-words flex gap-2 flex-col cursor-grab ${isDragging ? "opacity-50" : "bg-white"}`}
         >
             <div>{task.title}</div>
+            <hr className="border-1 border-gray-200 mb-2"/>
             <div
                 className={clsx(
                     "w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm",

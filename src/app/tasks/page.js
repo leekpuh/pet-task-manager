@@ -73,10 +73,11 @@ export default function ProjectTasks() {
       </div>
       <hr className="border-2 border-gray-200/75" />
       <div className="pt-5 grid grid-cols-4 min-h-screen gap-4">
+
         {/* Создано */}
-        <div className="border-r-2 border-gray-200/75 px-5">
+        <div ref={dropCreated} className={`border-r-2 border-gray-200/75 px-5 ${isOverCreated ? "bg-gray-100" : ""}`}>
           <div className="text-center bg-blue-200/75 p-2 rounded-t-xl">Создано</div>
-          <div ref={dropCreated} className="min-h-[300px]  p-2">
+          <div  className="min-h-[300px]  p-2">
             {tasks
               .filter((t) => t.status === "created" && String(t.projectData.id) === projectID)
               .map((task) => (
@@ -86,9 +87,9 @@ export default function ProjectTasks() {
         </div>
 
         {/* В работе */}
-        <div className="px-5">
+        <div ref={dropInProcess} className={`px-5 ${isOverInProcess ? "bg-gray-100" : ""}`}>
           <div className="text-center bg-orange-200/75 p-2 rounded-t-xl">В работе</div>
-          <div ref={dropInProcess} className="min-h-[300px]  p-2">
+          <div className="min-h-[300px]  p-2">
             {tasks
               .filter((t) => t.status === "inProcess" && String(t.projectData.id) === projectID)
               .map((task) => (
@@ -98,9 +99,10 @@ export default function ProjectTasks() {
         </div>
 
         {/* На проверке */}
-        <div className="px-5 border-l-2 border-gray-200/75">
+        <div ref={dropInTest} className={`px-5 border-l-2 border-gray-200/75 ${isOverInTest ? "bg-gray-100" : ""}`}>
           <div className="text-center bg-yellow-100 p-2 rounded-t-xl">На проверке</div>
-          <div ref={dropInTest} className="min-h-[300px]  p-2">
+          <div  className="min-h-[300px]  p-2 
+          ">
             {tasks
               .filter((t) => t.status === "inTest" && String(t.projectData.id) === projectID)
               .map((task) => (
@@ -110,9 +112,9 @@ export default function ProjectTasks() {
         </div>
 
         {/* Завершено */}
-        <div className="border-l-2 border-gray-200/75 px-5">
+        <div ref={dropDone} className={`border-l-2 border-gray-200/75 px-5 ${isOverDone? "bg-gray-100" : ""}`}>
           <div className="text-center bg-green-200/75 p-2 rounded-t-xl">Завершено</div>
-          <div ref={dropDone} className="min-h-[300px]  p-2">
+          <div  className="min-h-[300px]  p-2">
             {tasks
               .filter((t) => t.status === "done" && String(t.projectData.id) === projectID)
               .map((task) => (

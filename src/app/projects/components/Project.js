@@ -27,6 +27,7 @@ export default function Project({ project }) {
     return (
         <div className="w-full h-auto bg-white p-5 rounded-xl shadow-lg flex flex-col gap-4 border-2 border-gray-200">
             <div className="break-words">{project.title}</div>
+             <hr className="border-1 border-gray-200 mb-2"/>
             <div className="bg-gray-200 w-fit py-1 px-3 rounded-lg flex justify-center items-center gap-3 text-sm">
                 <div className="size-2 bg-gray-500 rounded-full"></div>Начало{" "}
                 {new Date(project.startDate).toLocaleDateString("ru-RU", {

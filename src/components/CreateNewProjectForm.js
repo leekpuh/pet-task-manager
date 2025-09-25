@@ -2,14 +2,16 @@
 import { v4 as uuidv4 } from "uuid";
 import { Field, Input, Label, Textarea } from "@headlessui/react";
 import clsx from "clsx";
-import { useRef, useContext } from "react";
+import { useRef, useContext, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { postProject } from "@/app/api/projects";
 import { ReRenderPageContext } from "@/app/context/reRenderPageContext";
+import validateTaskAndprojectForm from "@/app/utils/validateTaskAndProjectForm";
 
 export default function CreateNewProjectForm() {
     const { setReRenderProjects } = useContext(ReRenderPageContext);
     const today = new Date().toISOString().split("T");
+    const [error, setError] = useState([]);
 
     const title = useRef(null);
     const desc = useRef(null);
@@ -18,6 +20,7 @@ export default function CreateNewProjectForm() {
 
     function handleProjectSubmit(e) {
         e.preventDefault();
+
         const data = {
             id: uuidv4(),
             title: title.current.value,
@@ -26,9 +29,19 @@ export default function CreateNewProjectForm() {
             endDate: endDate.current.value,
             createdDate: today[0],
         };
+
+        setError([]);
+
+        const errors = validateTaskAndprojectForm(data, "задача");
+
+        if (errors) {
+            setError(errors);
+            return;
+        }
+
         postProject(data).then(() => {
             e.target.reset();
-            setReRenderProjects((prev => !prev));
+            setReRenderProjects((prev) => !prev);
         });
     }
 
@@ -37,6 +50,17 @@ export default function CreateNewProjectForm() {
             onSubmit={handleProjectSubmit}
             className="w-full max-w-md px-4 flex flex-col self-center"
         >
+            <div className="flex flex-col gap-2 mt-5">
+                {error &&
+                    error.map((err, idx) => (
+                        <div
+                            key={idx}
+                            className="border-1 border-red-300 text-red-400 text-sm rounded-lg py-1 px-3 w-fit"
+                        >
+                            * {err}
+                        </div>
+                    ))}
+            </div>
             <Field className="mt-10">
                 <Label className="text-lg text-gray-700 ">
                     Название проекта

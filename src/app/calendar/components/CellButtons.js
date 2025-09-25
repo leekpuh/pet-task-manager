@@ -6,8 +6,9 @@ import { createPortal } from "react-dom";
 import DialogCard from "../../../components/DialogCard";
 import AllDayTasks from "./AllDayTasks";
 
-export default function CellButtons({ date, dayTasks, dayDeadlines }) {
+export default function CellButtons({ day, dayTasks, dayDeadlines }) {
     const [isOpen, setIsOpen] = useState(false);
+    const  date = new Date(day.dateID).toLocaleDateString("ru-RU", { day: "2-digit", month: "long", year: "numeric"})
 
     useEffect(() => {
         const html = document.documentElement;
@@ -18,14 +19,14 @@ export default function CellButtons({ date, dayTasks, dayDeadlines }) {
 
     return (
         <div className="flex gap-4 m-3 justify-end">
-            <Button
+           { day.currentMonth && <Button
                 onClick={() => setIsOpen(true)}
                 title="Список задач"
                 className="ring-2 ring-blue-200  rounded-full px-2 cursor-pointer text-blue-400 size-8
                                 hover:bg-blue-200 hover:text-blue-500"
             >
                 <AiOutlineBars />
-            </Button>
+            </Button>}
             {isOpen &&
                 createPortal(
                     <DialogCard
